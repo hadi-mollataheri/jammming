@@ -10,16 +10,14 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>
-          Ja<span ClassName="diff-color">mmm</span>ing
+          Ja<span className="diff-color">mmm</span>ing
         </h1>
-        {/* <SearchBar />
-        <SearchResult />
-        <Playlist>
-          <Traclist>
-            <Track />
-          </Traclist>
-        </Playlist> */}
       </header>
+      <main>
+        <SearchBar />
+        {/* <SearchResult /> */}
+        {/* <Playlist /> */}
+      </main>
     </div>
   );
 }
