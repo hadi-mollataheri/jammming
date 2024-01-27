@@ -15,8 +15,10 @@ function App() {
       </header>
       <main>
         <SearchBar />
-        <SearchResult />
-        {/* <Playlist /> */}
+        <section className="result-playlist">
+          <SearchResult />
+          <Playlist />
+        </section>
       </main>
     </div>
   );
