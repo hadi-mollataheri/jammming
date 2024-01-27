@@ -15,7 +15,7 @@ function App() {
       </header>
       <main>
         <SearchBar />
-        {/* <SearchResult /> */}
+        <SearchResult />
         {/* <Playlist /> */}
       </main>
     </div>
