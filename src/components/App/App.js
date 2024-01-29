@@ -28,6 +28,15 @@ const groupOfTracks = [
 ];
 
 function App() {
+  // Create a state that can store and update the received data.
+  const [tracks, setTracks] = useState([
+    {
+      name: "",
+      artist: "",
+      ablum: "",
+      id: "",
+    },
+  ]);
 
   return (
     <div className="App">
@@ -48,3 +57,7 @@ function App() {
 }
 
 export default App;
+
+// ToDo:
+// 2- So first I take care of SearchBar component
+// 3- Then use useState() for the components, so I can update each data in response to user input and other *events*.
