@@ -1,14 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
-import SearchResult from "../SearchResults/SearchResults.js";
+import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
-// import Tracklist from "../Tracklist/Tracklist.js";
-import Track from "../Track/Track.js";
 
 // Create(hard code) an array of track objects to -->
 // be passed down to Track component
-const tracklist = [
+const groupOfTracks = [
   {
     name: "Under Ground Kings",
     artist: "Drake",
@@ -30,15 +28,6 @@ const tracklist = [
 ];
 
 function App() {
-  // Use state to store search results array, allowing you to update the array in response to user inputs
-  const [track, setTrack] = useState([
-    {
-      name: "",
-      artist: "",
-      album: "",
-      id: null,
-    },
-  ]);
 
   return (
     <div className="App">
@@ -50,7 +39,7 @@ function App() {
       <main>
         <SearchBar />
         <section className="result-playlist">
-          <SearchResult tracks={track} />
+          <SearchResults groupOfTracks={groupOfTracks} />
           <Playlist />
         </section>
       </main>
