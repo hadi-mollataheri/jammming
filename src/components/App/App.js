@@ -34,7 +34,7 @@ function App() {
   useEffect(() => {
     // use state setter along side of the JSON.parse()
     setFetchedTracksState(fetchedTracks);
-  }, [fetchedTracks]);
+  }, [fetchedTracksState]);
 
   return (
     <div className="App">
