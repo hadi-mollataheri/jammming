@@ -45,11 +45,13 @@ function App() {
       </header>
       <main>
         <SearchBar />
-        <section className="result-playlist">
-          <SearchResults fetchedTracks={fetchedTracksState} />
-        </section>
-        <section className="playlist">
-          <Playlist />
+        <section className="main-content">
+          <div className="search-results">
+            <SearchResults fetchedTracks={fetchedTracksState} />
+          </div>
+          <div className="playlist">
+            <Playlist />
+          </div>
         </section>
       </main>
     </div>

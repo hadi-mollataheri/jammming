@@ -10,7 +10,11 @@ function SearchResults({ fetchedTracks }) {
   }, [fetchedTracks]);
 
   return (
-    <div>
+    <div
+      className="playlist"
+      style={{ backgroundColor: "#6059E1", width: 300, height: 400 }}
+    >
+      <h2>Results</h2>
       {arrOfTracks.map((track) => {
         return <Track key={track.id} track={track} />;
       })}

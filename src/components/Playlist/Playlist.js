@@ -3,7 +3,7 @@ import React from "react";
 function Playlist() {
   return (
     <div
-      calssName="playlist"
+      className="playlist"
       style={{ backgroundColor: "#6059E1", width: 300, height: 400 }}
     >
       <form>
