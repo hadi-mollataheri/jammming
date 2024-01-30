@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
@@ -6,7 +6,7 @@ import Playlist from "../Playlist/Playlist.js";
 
 // Create(hard code) an array of track objects to -->
 // be passed down to Track component
-const groupOfTracks = [
+const fetchedTracks = [
   {
     name: "Under Ground Kings",
     artist: "Drake",
@@ -29,14 +29,12 @@ const groupOfTracks = [
 
 function App() {
   // Create a state that can store and update the received data.
-  const [tracks, setTracks] = useState([
-    {
-      name: "",
-      artist: "",
-      ablum: "",
-      id: "",
-    },
-  ]);
+  const [fetchedTracksState, setFetchedTracksState] = useState([]);
+
+  useEffect(() => {
+    // use state setter along side of the JSON.parse()
+    setFetchedTracksState(fetchedTracks);
+  }, [fetchedTracks]);
 
   return (
     <div className="App">
@@ -48,7 +46,9 @@ function App() {
       <main>
         <SearchBar />
         <section className="result-playlist">
-          <SearchResults groupOfTracks={groupOfTracks} />
+          <SearchResults fetchedTracks={fetchedTracksState} />
+        </section>
+        <section className="playlist">
           <Playlist />
         </section>
       </main>

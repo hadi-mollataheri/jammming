@@ -1,8 +1,9 @@
-import React from "react";
-import Track from "../Track/Track.js";
+// This component will be used inside of the Playlist component.
+
+import React, { useState, useEffect } from "react";
 
 function Tracklist({ tracks }) {
-  return tracks.map((track) => <Track key={track.id} track={track} />);
+
 }
 
 export default Tracklist;
