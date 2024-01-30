@@ -12,7 +12,7 @@ function SearchResults({ fetchedTracks }) {
   return (
     <div>
       {arrOfTracks.map((track) => {
-        <Track key={track.id} track={track} />;
+        return <Track key={track.id} track={track} />;
       })}
     </div>
   );
