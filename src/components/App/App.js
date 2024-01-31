@@ -29,7 +29,7 @@ const fetchedTracks = [
 
 function App() {
   // Create a state that can store and update the received data.
-  const [fetchedTracksState, setFetchedTracksState] = useState([]);
+  const [fetchedTracksState, setFetchedTracksState] = useState(null);
 
   useEffect(() => {
     // use state setter along side of the JSON.parse()

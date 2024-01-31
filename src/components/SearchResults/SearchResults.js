@@ -6,7 +6,6 @@ function SearchResults({ fetchedTracks }) {
 
   useEffect(() => {
     setArrOfTracks(fetchedTracks);
-    return setArrOfTracks([]);
   }, [fetchedTracks]);
 
   return (
