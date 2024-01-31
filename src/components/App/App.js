@@ -46,12 +46,8 @@ function App() {
       <main>
         <SearchBar />
         <section className="main-content">
-          <div className="search-results">
-            <SearchResults fetchedTracks={fetchedTracksState} />
-          </div>
-          <div className="playlist">
-            <Playlist />
-          </div>
+          <SearchResults fetchedTracks={fetchedTracksState} />
+          <Playlist />
         </section>
       </main>
     </div>

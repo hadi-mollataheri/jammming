@@ -10,7 +10,7 @@ function SearchResults({ fetchedTracks }) {
 
   return (
     <div
-      className="playlist"
+      className="search-results"
       style={{ backgroundColor: "#6059E1", width: 300, height: 400 }}
     >
       <h2>Results</h2>
