@@ -14,6 +14,7 @@ function SearchResults({ fetchedTracks }) {
       style={{ backgroundColor: "#6059E1", width: 300, height: 400 }}
     >
       <h2>Results</h2>
+      <hr />
       {arrOfTracks.map((track) => {
         return <Track key={track.id} track={track} />;
       })}

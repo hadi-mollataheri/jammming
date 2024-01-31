@@ -27,14 +27,23 @@ const fetchedTracks = [
   },
 ];
 
+const sampleTrack = "Lily | Alan Walker-Different World";
+
 function App() {
   // Create a state that can store and update the received data.
-  const [fetchedTracksState, setFetchedTracksState] = useState(null);
+  const [fetchedTracksState, setFetchedTracksState] = useState([]);
+  // Create a state for initializing the playlist name
+  const [playlistName, setPlaylistName] = useState("");
+  // Create a state for initializing the playlist tracks
+  const [playlistTracks, setPlaylistTracks] = useState([]);
 
   useEffect(() => {
-    // use state setter along side of the JSON.parse()
     setFetchedTracksState(fetchedTracks);
   }, [fetchedTracksState]);
+
+  useEffect(() => {
+    setPlaylistTracks(sampleTrack);
+  }, [playlistTracks]);
 
   return (
     <div className="App">
@@ -47,7 +56,12 @@ function App() {
         <SearchBar />
         <section className="main-content">
           <SearchResults fetchedTracks={fetchedTracksState} />
-          <Playlist />
+          <Playlist
+            playlistName={playlistName}
+            updatePlaylistName={setPlaylistName}
+            playlistTracks={playlistTracks}
+            updatePlaylistTracks={setPlaylistTracks}
+          />
         </section>
       </main>
     </div>
