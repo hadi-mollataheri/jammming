@@ -1,14 +1,14 @@
-// This component will be used inside of the Playlist component.
-
 import React from "react";
+import Track from "../Track/Track.js";
 
-function Tracklist({ tracks }) {
-
-    return (
-        <div>
-            <p>{tracks}</p>
-        </div>
-    );
+function Tracklist(props) {
+  return (
+    <div className='tracklist'>
+      {props.tracks.map((track) => {
+        return <Track tracks={track} />;
+      })}
+    </div>
+  );
 }
 
 export default Tracklist;
