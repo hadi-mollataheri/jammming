@@ -27,23 +27,22 @@ const fetchedTracks = [
   },
 ];
 
-const sampleTrack = "Lily | Alan Walker-Different World";
 
 function App() {
   // Create a state that can store and update the received data.
   const [fetchedTracksState, setFetchedTracksState] = useState([]);
   // Create a state for initializing the playlist name
-  const [playlistName, setPlaylistName] = useState("");
+  const [playlistName, setPlaylistName] = useState("New Playlist");
   // Create a state for initializing the playlist tracks
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
   useEffect(() => {
     setFetchedTracksState(fetchedTracks);
-  }, [fetchedTracksState]);
+  }, []);
 
   useEffect(() => {
-    setPlaylistTracks(sampleTrack);
-  }, [playlistTracks]);
+    setPlaylistTracks(fetchedTracks);
+  }, []);
 
   // Create method that accept an argument Track from the SearchResults and if it's not in the Playlist already then add it
   // This method will be an event handler for the '+' button next to the each Track in SearchResult
@@ -54,6 +53,10 @@ function App() {
   //     });
   //   }
   // };
+
+  const updatePlaylistName = (name) => {
+    setPlaylistName(name);
+  }
 
   return (
     <div className="App">
@@ -68,7 +71,7 @@ function App() {
           <SearchResults fetchedTracks={fetchedTracksState} />
           <Playlist
             playlistName={playlistName}
-            updatePlaylistName={setPlaylistName}
+            onNameChange={updatePlaylistName}
             playlistTracks={playlistTracks}
             updatePlaylistTracks={setPlaylistTracks}
           />

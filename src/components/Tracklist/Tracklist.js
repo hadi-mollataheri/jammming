@@ -5,7 +5,7 @@ function Tracklist(props) {
   return (
     <div className='tracklist'>
       {props.tracks.map((track) => {
-        return <Track tracks={track} />;
+        return <Track track={track} />;
       })}
     </div>
   );

@@ -3,7 +3,7 @@ import Tracklist from "../Tracklist/Tracklist.js";
 
 function Playlist(props) {
   const handleChange = ({ target }) => {
-    props.updatePlaylistName(target.value);
+    props.onNameChange(target.value);
   };
 
   return (
@@ -23,12 +23,12 @@ function Playlist(props) {
           value={props.playlistName}
         />
         <hr />
+        <Tracklist
+          tracks={props.playlistTracks}
+          updateTracks={props.updatePlaylistTracks}
+        />
         <button type="submit">SAVE TO SPOTIFY</button>
       </form>
-      <Tracklist
-        tracks={props.playlistTracks}
-        updateTracks={props.updatePlaylistTracks}
-      />
     </div>
   );
 }
