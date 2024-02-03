@@ -45,6 +45,16 @@ function App() {
     setPlaylistTracks(sampleTrack);
   }, [playlistTracks]);
 
+  // Create method that accept an argument Track from the SearchResults and if it's not in the Playlist already then add it
+  // This method will be an event handler for the '+' button next to the each Track in SearchResult
+  // const handleAddSong = ({ target }) => {
+  //   if (!playlistTracks.includes(target.track)) {
+  //     setPlaylistTracks((prev) => {
+  //       return [target.track, ...prev];
+  //     });
+  //   }
+  // };
+
   return (
     <div className="App">
       <header className="App-header">

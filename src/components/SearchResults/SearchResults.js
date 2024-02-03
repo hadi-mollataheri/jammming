@@ -1,23 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Track from "../Track/Track.js";
+import React from "react";
+import Tracklist from "../Tracklist/Tracklist.js";
 
-function SearchResults({ fetchedTracks }) {
-  const [arrOfTracks, setArrOfTracks] = useState([]);
-
-  useEffect(() => {
-    setArrOfTracks(fetchedTracks);
-  }, [fetchedTracks]);
-
+function SearchResults(props) {
   return (
-    <div
-      className="search-results"
-      style={{ backgroundColor: "#6059E1", width: 300, height: 400 }}
-    >
+    <div className="search-results">
       <h2>Results</h2>
-      <hr />
-      {arrOfTracks.map((track) => {
-        return <Track key={track.id} track={track} />;
-      })}
+      <Tracklist tracks={props.fetchedTracks} />
     </div>
   );
 }
