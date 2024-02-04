@@ -2,7 +2,8 @@ import React from "react";
 import Tracklist from "../Tracklist/Tracklist.js";
 
 function Playlist(props) {
-  const handleChange = ({ target }) => {
+
+  const handleNameChange = ({ target }) => {
     props.onNameChange(target.value);
   };
 
@@ -19,13 +20,12 @@ function Playlist(props) {
         <input
           id="playListName"
           type="text"
-          onChange={handleChange}
+          onChange={handleNameChange}
           value={props.playlistName}
         />
         <hr />
         <Tracklist
           tracks={props.playlistTracks}
-          updateTracks={props.updatePlaylistTracks}
         />
         <button type="submit">SAVE TO SPOTIFY</button>
       </form>
