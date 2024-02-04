@@ -45,7 +45,8 @@ function App() {
     next to each track in the search results list. I used useCallback hook so if the 
     playlistTracks didn't changed the addSong function won't be created again 
     and don't cause the SearchResult to re-render. This function is supposed to be an event handler
-    so I send it to SearchResults with the onAdd prop name.  
+    so I send it to SearchResults with the onAdd prop name. 
+    '+' buttons should be connected to each Track so they should be made inside Track component.
 
     You will want to create a method that can accept a track as an argument,
     and check if the passed-in track is in the playlist already — 
@@ -60,7 +61,7 @@ function App() {
       if (
         !playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)
       ) {
-        setPlaylistTracks((prevTracks) => [track, ...prevTracks]);
+        setPlaylistTracks((prevTracks) => [...prevTracks, track]);
       }
     },
     [playlistTracks]
