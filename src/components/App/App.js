@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
@@ -27,7 +27,6 @@ const fetchedTracks = [
   },
 ];
 
-
 function App() {
   // Create a state that can store and update the received data.
   const [fetchedTracksState, setFetchedTracksState] = useState([]);
@@ -40,23 +39,36 @@ function App() {
     setFetchedTracksState(fetchedTracks);
   }, []);
 
-  useEffect(() => {
-    setPlaylistTracks(fetchedTracks);
-  }, []);
+  /*
+    implement a method that adds a selected song from the search results track list to the user’s custom playlist. 
+    The method should be triggered when the user clicks an “add” button displayed 
+    next to each track in the search results list. I used useCallback hook so if the 
+    playlistTracks didn't changed the addSong function won't be created again 
+    and don't cause the SearchResult to re-render. This function is supposed to be an event handler
+    so I send it to SearchResults with the onAdd prop name.  
 
-  // Create method that accept an argument Track from the SearchResults and if it's not in the Playlist already then add it
-  // This method will be an event handler for the '+' button next to the each Track in SearchResult
-  // const handleAddSong = ({ target }) => {
-  //   if (!playlistTracks.includes(target.track)) {
-  //     setPlaylistTracks((prev) => {
-  //       return [target.track, ...prev];
-  //     });
-  //   }
-  // };
+    You will want to create a method that can accept a track as an argument,
+    and check if the passed-in track is in the playlist already — 
+    there is a unique property of each track that can help you with
+    this step, and if the song is new, add the song to the playlist.
+    The “add” button can be anything. For example, a + sign provides a visual aid
+    of “adding” a song. An event listener can wait for the button to be clicked and
+      trigger the method that adds the track to the playlist.
+  */
+  const addTrack = useCallback(
+    (track) => {
+      if (
+        !playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)
+      ) {
+        setPlaylistTracks((prevTracks) => [track, ...prevTracks]);
+      }
+    },
+    [playlistTracks]
+  );
 
   const updatePlaylistName = (name) => {
     setPlaylistName(name);
-  }
+  };
 
   return (
     <div className="App">
@@ -67,8 +79,10 @@ function App() {
       </header>
       <main>
         <SearchBar />
+
         <section className="main-content">
-          <SearchResults fetchedTracks={fetchedTracksState} />
+          <SearchResults fetchedTracks={fetchedTracksState} onAdd={addTrack} />
+
           <Playlist
             playlistName={playlistName}
             onNameChange={updatePlaylistName}
