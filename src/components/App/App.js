@@ -40,21 +40,13 @@ function App() {
   }, []);
 
   /*
-    implement a method that adds a selected song from the search results track list to the user’s custom playlist. 
+    implement a function that adds a selected song from the search results track list to the user’s custom playlist. 
     The method should be triggered when the user clicks an “add” button displayed 
     next to each track in the search results list. I used useCallback hook so if the 
     playlistTracks didn't changed the addSong function won't be created again 
     and don't cause the SearchResult to re-render. This function is supposed to be an event handler
     so I send it to SearchResults with the onAdd prop name. 
     '+' buttons should be connected to each Track so they should be made inside Track component.
-
-    You will want to create a method that can accept a track as an argument,
-    and check if the passed-in track is in the playlist already — 
-    there is a unique property of each track that can help you with
-    this step, and if the song is new, add the song to the playlist.
-    The “add” button can be anything. For example, a + sign provides a visual aid
-    of “adding” a song. An event listener can wait for the button to be clicked and
-      trigger the method that adds the track to the playlist.
   */
   const addTrack = useCallback(
     (track) => {
@@ -66,6 +58,24 @@ function App() {
     },
     [playlistTracks]
   );
+
+  /*
+  create a function that can accept a track as an argument, and check if the passed-in 
+  track is in the playlist — there is a unique property of each track that can help you with this step, 
+  and if the song exists in the playlist, remove it.
+  The “remove” button can be anything. For example, a - sign provides a 
+  visual aid of “subtracting” or “removing” a song. An event listener can 
+  wait for the button to be clicked and trigger the method that removes the track from the playlist.
+  Don’t forget to render the playlist component with the updated 
+  playlist to reflect the changes made by removing the track!
+  */
+  const removeTrack = useCallback((track) => {
+    if (playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)) {
+      setPlaylistTracks((prevTracks) => {
+        return prevTracks.filter((remainingTrack) => remainingTrack !== track);
+      });
+    }
+  });
 
   const updatePlaylistName = (name) => {
     setPlaylistName(name);
@@ -86,8 +96,9 @@ function App() {
 
           <Playlist
             playlistName={playlistName}
-            onNameChange={updatePlaylistName}
             playlistTracks={playlistTracks}
+            onRemove={removeTrack}
+            onNameChange={updatePlaylistName}
             updatePlaylistTracks={setPlaylistTracks}
           />
         </section>
