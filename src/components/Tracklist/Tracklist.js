@@ -10,6 +10,7 @@ function Tracklist(props) {
             track={track}
             key={track.id}
             onAdd={props.onAdd}
+            isRemovable={props.isRemovable}
             onRemove={props.onRemove}
           />
         );

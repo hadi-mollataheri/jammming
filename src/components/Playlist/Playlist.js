@@ -20,7 +20,11 @@ function Playlist(props) {
           value={props.playlistName}
         />
         <hr />
-        <Tracklist tracks={props.playlistTracks} onRemove={props.onRemove} />
+        <Tracklist
+          tracks={props.playlistTracks}
+          isRemovable={props.isRemovable}
+          onRemove={props.onRemove}
+        />
         <button type="submit">SAVE TO SPOTIFY</button>
       </form>
     </div>

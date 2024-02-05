@@ -92,11 +92,12 @@ function App() {
         <SearchBar />
 
         <section className="main-content">
-          <SearchResults fetchedTracks={fetchedTracksState} onAdd={addTrack} />
+          <SearchResults fetchedTracks={fetchedTracksState} onAdd={addTrack} isRemovable={false} />
 
           <Playlist
             playlistName={playlistName}
             playlistTracks={playlistTracks}
+            isRemovable={true}
             onRemove={removeTrack}
             onNameChange={updatePlaylistName}
             updatePlaylistTracks={setPlaylistTracks}
