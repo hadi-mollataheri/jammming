@@ -2,16 +2,12 @@ import React from "react";
 import Tracklist from "../Tracklist/Tracklist.js";
 
 function Playlist(props) {
-
   const handleNameChange = ({ target }) => {
     props.onNameChange(target.value);
   };
 
   return (
-    <div
-      className="playlist"
-      style={{ backgroundColor: "#6059E1", width: 300, height: 400 }}
-    >
+    <div className="playlist">
       <form>
         <label htmlFor="playListName" style={{ fontWeight: "bold" }}>
           Playlist
@@ -24,9 +20,7 @@ function Playlist(props) {
           value={props.playlistName}
         />
         <hr />
-        <Tracklist
-          tracks={props.playlistTracks}
-        />
+        <Tracklist tracks={props.playlistTracks} onRemove={props.onRemove} />
         <button type="submit">SAVE TO SPOTIFY</button>
       </form>
     </div>

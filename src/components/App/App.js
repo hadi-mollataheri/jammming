@@ -72,10 +72,10 @@ function App() {
   const removeTrack = useCallback((track) => {
     if (playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)) {
       setPlaylistTracks((prevTracks) => {
-        return prevTracks.filter((remainingTrack) => remainingTrack !== track);
+        return prevTracks.filter((remainingTrack) => remainingTrack.id !== track.id);
       });
     }
-  });
+  }, [playlistTracks]);
 
   const updatePlaylistName = (name) => {
     setPlaylistName(name);

@@ -1,19 +1,20 @@
-// This component is used in SearchResult component.
-
 import React from "react";
 
 function Track(props) {
-  // onAdd is a function that needs to be called with a track
-  const addTrackHandler = ({ target }) => {
+  const addTrackHandler = (e) => {
     props.onAdd(props.track);
   };
-
-  // For readability I create the <button>s inside a function and I'll -
-  // render that function inside the render section(return statement)
-  const renderActions = () => {
-    return <button onClick={addTrackHandler}>+</button>;
+  const removeTrackHandler = (e) => {
+    props.onRemove(props.track);
   };
-
+  const renderActions = () => {
+    return (
+      <div>
+        <button onClick={addTrackHandler}>+</button>
+        <button onClick={removeTrackHandler}>-</button>
+      </div>
+    );
+  };
   return (
     <div className="track">
       <div className="track-info">
@@ -26,5 +27,4 @@ function Track(props) {
     </div>
   );
 }
-
 export default Track;
