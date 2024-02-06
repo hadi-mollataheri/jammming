@@ -14,10 +14,9 @@ function Playlist(props) {
         </label>
         <br />
         <input
-          id="playListName"
           type="text"
           onChange={handleNameChange}
-          value={props.playlistName}
+          placeholder={props.playlistName}
         />
         <hr />
         <Tracklist
