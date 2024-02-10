@@ -27,6 +27,13 @@ const fetchedTracks = [
   },
 ];
 
+// Create a hard code array containing the spotify URI, witch each of them represents a track
+const uriList = [
+  "spotify:track:1D9XLqQp2YYiOxrr5KLb8K",
+  "spotify:track:0lks2Kt9veMOFEAPN0fsqN",
+  "spotify:track:50nKn5CfJsX1pOKlHEC61j",
+];
+
 function App() {
   // Create a state that can store and update the received data.
   const [fetchedTracksState, setFetchedTracksState] = useState([]);

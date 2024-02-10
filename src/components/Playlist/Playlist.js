@@ -31,3 +31,8 @@ function Playlist(props) {
 }
 
 export default Playlist;
+
+/*
+  Explanation for input:
+    There is no need that I make the input controllable(setting value={props.playlistName}) 
+*/
