@@ -1,5 +1,5 @@
-import { clientId } from "./c-id";
-/*
+const clientId = require('./c-id');
+  /*
 Create a JavaScript module that will handle the logic for getting an access 
 token and using it to make requests. The method should have a way to get a 
 user’s access token and store it.
@@ -18,7 +18,7 @@ function redirectToAuthorizationServer() {
   )}&state=${encodeURIComponent(state)}`;
   // After user granted permission the code below direct the user to redirect_uri + hash fragment
   // (or hash property: the part of url that comes after # and it leads us specific section within a website)
-  window.location.href = url;
+  // window.location.href = url;
 }
 redirectToAuthorizationServer();
 
@@ -26,7 +26,8 @@ redirectToAuthorizationServer();
 // Create a function called extractToken that accept a url as an argument
 function extractTokenFromUrl() {
   // I should access to the new url
-  let finalUrl = window.location.href;
+  // let finalUrl = window.location.href;
+  let finalUrl = 'http://localhost:3000/#access_token=BQB6t0xj7_OJLJCKC9GyfeaqSUDebnKBHXu28OqfJ1pAAdqLgZx4OMPb7On0YaZ5iCKR5ntnFkfNWCIjNPNFoJwCA4l0y6-xaQOH_PQouGLWSm77eDMhJ8ij9LYBbA1sIoxUY_qC9PU1u8xjHUI2LDNzuhUNOLtsSaN1qxTovWIqApvzORgdsUXmDt2vlyy9StdpMj7kQgPqusU3z6SOsoPw963RVUrGwyxSpKo&token_type=Bearer&expires_in=3600&state=20';;
   // Turn the string url to object url
   let objectUrl = new URL(finalUrl);
   // Extract the hash property(it's value still is string) of objectUrl
@@ -43,7 +44,18 @@ function extractTokenFromUrl() {
     let [key, value] = keyValuePair.split("=");
     keyValueObj[key] = value;
   });
-  console.log(keyValueObj);
-  // return keyValueObj;
+  return keyValueObj;
 }
-extractTokenFromUrl();
+
+/*
+From the URL, you should extract the access token values and set them up in your app. 
+You should also set up a variable for the expiration time and configure the access token to expire at the appropriate time.
+*/
+let {access_token, expires_in} = extractTokenFromUrl();
+
+const handleExpireToken = () => {
+  redirectToAuthorizationServer();
+  let {access_token, expires_in} = extractTokenFromUrl();
+}
+
+setTimeout(handleExpireToken, expires_in*1000);
