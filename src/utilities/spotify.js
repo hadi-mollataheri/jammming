@@ -4,6 +4,11 @@ Create a JavaScript module that will handle the logic for getting an access
 token and using it to make requests. The method should have a way to get a 
 user’s access token and store it.
 */
+
+// *** Eventually I should wrap all the below function inside a single function I think for now.***
+// *** When user click on Search button above functions should be run
+// *** So we can have a token
+
 // First step create a url that open a page and ask user to give permission and then
 function redirectToAuthorizationServer() {
   const client_id = clientId;
@@ -68,3 +73,32 @@ const handleExpireToken = () => {
   setTimeout(handleExpireToken, savedExpires_in * 1000);
 };
 handleExpireToken();
+
+/*
+Connect the search bar to Spotify so that it can query data from
+the Spotify API. Your implementation should enable users to enter
+a search parameter and receive a response from the Spotify API.
+You should display the results from the request to the user.
+To make your request to the API, 
+use the /v1/search?type=TRACK endpoint. You can refer to 
+the Spotify Web API Endpoint Reference for guidance on formatting 
+your request.
+*/
+async function searchRequest() {
+  try {
+    const response = await fetch(
+      "https://api.spotify.com/v1/search?type=TRACK",
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
