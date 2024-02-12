@@ -3,6 +3,7 @@ import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
+import Spotify from "../../utilities/spotify.js";
 
 // Create(hard code) an array of track objects to -->
 // be passed down to Track component
@@ -42,9 +43,10 @@ function App() {
   // Create a state for initializing the playlist tracks
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
-  useEffect(() => {
-    setFetchedTracksState(fetchedTracks);
-  }, []);
+  const handleSearch = (userSearchInput) => {
+    setFetchedTracksState(() => Spotify.searchRequest(userSearchInput));
+  };
+
   // Logic for adding track from SearchResults to Playlist
   const addTrack = useCallback(
     (track) => {
@@ -84,7 +86,7 @@ function App() {
         </h1>
       </header>
       <main>
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
 
         <section className="main-content">
           <SearchResults
@@ -107,7 +109,6 @@ function App() {
 }
 
 export default App;
-
 
 /*
   Explanation for AddTrack:

@@ -1,16 +1,18 @@
-const clientId = require("./c-id");
-/*
-Create a JavaScript module that will handle the logic for getting an access 
-token and using it to make requests. The method should have a way to get a 
-user’s access token and store it.
-*/
-
-// *** Eventually I should wrap all the below function inside a single function I think for now.***
 // *** When user click on Search button above functions should be run
 // *** So we can have a token
 
-// First step create a url that open a page and ask user to give permission and then
-function redirectToAuthorizationServer() {
+const clientId = require("./c-id");
+let access_token = '';
+function getAccessToken() {
+  // If we a have a access_token(this we make sure that the getAccessToken won't run again)
+  if (access_token) {
+    // Return access_token
+    return access_token;
+  }
+
+  // Otherwise
+  // First step create a url that open a page and ask user to give permission and then
+
   const client_id = clientId;
   const response_type = "token";
   const redirect_uri = "http://localhost:3000";
@@ -24,18 +26,15 @@ function redirectToAuthorizationServer() {
   // After user granted permission the code below direct the user to redirect_uri + hash fragment
   // (or hash property: the part of url that comes after # and it leads us specific section within a website)
   window.location.href = url;
-}
-redirectToAuthorizationServer();
 
-// Now I should extract the values of access_token key and expires_in key
-// Create a function called extractToken that accept a url as an argument
-function extractTokenFromUrl() {
-  // I should access to the new url
+  // Extract the values of access_token key and expires_in key
+  // Access to the new url
   let finalUrl = window.location.href;
   // Turn the string url to object url
   let objectUrl = new URL(finalUrl);
   if (objectUrl.hash === "") {
     alert("Please log into your account and grant access!");
+    return;
   }
   // Extract the hash property(it's value still is string) of objectUrl
   let hash = objectUrl.hash;
@@ -51,43 +50,26 @@ function extractTokenFromUrl() {
     let [key, value] = keyValuePair.split("=");
     keyValueObj[key] = value;
   });
-  return keyValueObj;
-}
 
-/*
-From the URL, you should extract the access token values and set them up in your app. 
-You should also set up a variable for the expiration time and configure the access token to expire at the appropriate time.
-*/
-let { access_token, expires_in } = extractTokenFromUrl();
-
-// Save the expires_in in browser local storage to avoid refreshing the timer
-localStorage.setItem("expires_in", expires_in.toString());
-let savedExpires_in = Number(localStorage.getItem("expires_in"));
-
-const handleExpireToken = () => {
-  redirectToAuthorizationServer();
-  let { access_token, expires_in } = extractTokenFromUrl();
+  let { access_token, expires_in } = keyValueObj;
+  if (access_token === undefined) {
+    alert("Please log into your account and grant access!");
+    return;
+  }
+  // Save the expires_in in browser local storage to avoid refreshing the timer
   localStorage.setItem("expires_in", expires_in.toString());
   let savedExpires_in = Number(localStorage.getItem("expires_in"));
-  // setTimeout should be here incase of that the savedExpires_in still be undefined if user hasn't logged in.
-  setTimeout(handleExpireToken, savedExpires_in * 1000);
-};
-handleExpireToken();
 
-/*
-Connect the search bar to Spotify so that it can query data from
-the Spotify API. Your implementation should enable users to enter
-a search parameter and receive a response from the Spotify API.
-You should display the results from the request to the user.
-To make your request to the API, 
-use the /v1/search?type=TRACK endpoint. You can refer to 
-the Spotify Web API Endpoint Reference for guidance on formatting 
-your request.
-*/
-async function searchRequest() {
+  window.setTimeout(() => (access_token = ""), savedExpires_in * 1000);
+  window.history.pushState("Access Token", null, "/"); // This clears the parameters, allowing us to grab a new access token when it expires.
+  return access_token;
+}
+
+export async function searchRequest(userSearchInput) {
   try {
+    const access_token = getAccessToken();
     const response = await fetch(
-      "https://api.spotify.com/v1/search?type=TRACK",
+      `https://api.spotify.com/v1/search?type=track&q=${userSearchInput}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,

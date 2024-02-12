@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
-function SearchBar() {
+function SearchBar(props) {
   // State for input form(controlled component)
   const [songName, setSongName] = useState("");
 
   const handleChange = ({ target }) => setSongName(target.value);
+  const handleClick = () => {
+    props.handleSearch(songName);
+  };
   const handleSubmit = (e) => e.preventDefault();
   return (
     <section role="search">
@@ -19,7 +22,9 @@ function SearchBar() {
           value={songName}
         />
         <br />
-        <button type="submit">SEARCH</button>
+        <button type="submit" onClick={handleClick}>
+          SEARCH
+        </button>
       </form>
     </section>
   );
