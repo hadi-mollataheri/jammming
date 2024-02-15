@@ -1,51 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import "./App.css";
+
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
-import Spotify from "../../utilities/spotify.js";
-
-// Create(hard code) an array of track objects to -->
-// be passed down to Track component
-const fetchedTracks = [
-  {
-    name: "Under Ground Kings",
-    artist: "Drake",
-    album: "Take Care",
-    id: 1,
-  },
-  {
-    name: "Lily",
-    artist: "Alan Walker, K-391, Emelie Hollow",
-    album: "Different World",
-    id: 2,
-  },
-  {
-    name: "Heart of Gold",
-    artist: "Ryan Stewart",
-    album: "Celtic Spell",
-    id: 3,
-  },
-];
-
-// Create a hard code array containing the spotify URI, witch each of them represents a track
-const uriList = [
-  "spotify:track:1D9XLqQp2YYiOxrr5KLb8K",
-  "spotify:track:0lks2Kt9veMOFEAPN0fsqN",
-  "spotify:track:50nKn5CfJsX1pOKlHEC61j",
-];
+import { searchRequest } from "../../utilities/spotify.js";
 
 function App() {
   // Create a state that can store and update the received data.
   const [fetchedTracksState, setFetchedTracksState] = useState([]);
+  
   // Create a state for initializing the playlist name
   const [playlistName, setPlaylistName] = useState("New Playlist");
   // Create a state for initializing the playlist tracks
   const [playlistTracks, setPlaylistTracks] = useState([]);
+  // Create a state for storing the user search input
+  const [userSearchInputState, setUserSearchInputState] = useState("");
 
-  const handleSearch = (userSearchInput) => {
-    setFetchedTracksState(() => Spotify.searchRequest(userSearchInput));
-  };
+
+  // Use the useCallback hook to memoize the handleSearch function
+  const handleSearch = useCallback((userSearchInput) => {
+    searchRequest(userSearchInput).then(setFetchedTracksState);
+  }, []);
 
   // Logic for adding track from SearchResults to Playlist
   const addTrack = useCallback(
@@ -74,9 +50,9 @@ function App() {
     [playlistTracks]
   );
   // Save user playlist name
-  const updatePlaylistName = (name) => {
+  const updatePlaylistName = useCallback((name) => {
     setPlaylistName(name);
-  };
+  }, []);
 
   return (
     <div className="App">
@@ -86,7 +62,11 @@ function App() {
         </h1>
       </header>
       <main>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar
+          userSearchInput={userSearchInputState}
+          onUserSearchInputChange={setUserSearchInputState}
+          onSearch={handleSearch}
+        />
 
         <section className="main-content">
           <SearchResults

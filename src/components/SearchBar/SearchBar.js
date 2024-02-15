@@ -1,30 +1,33 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 
-function SearchBar(props) {
-  // State for input form(controlled component)
-  const [songName, setSongName] = useState("");
+function SearchBar({ userSearchInput, onUserSearchInputChange, onSearch }) {
+  const handleChange = useCallback(
+    ({ target }) => onUserSearchInputChange(target.value),
+    []
+  );
 
-  const handleChange = ({ target }) => setSongName(target.value);
-  const handleClick = () => {
-    props.handleSearch(songName);
-  };
-  const handleSubmit = (e) => e.preventDefault();
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      onSearch(userSearchInput);
+    },
+    [onSearch, userSearchInput]
+  );
+
   return (
     <section role="search">
+      <label htmlFor="searchBar">ENTER THE SONG TITLE</label>
+      <br />
       <form onSubmit={handleSubmit}>
-        <label htmlFor="searchBar">ENTER THE SONG TITLE</label>
-        <br />
         <input
           onChange={handleChange}
           id="searchBar"
           name="searchBar"
           type="text"
-          value={songName}
+          value={userSearchInput}
         />
         <br />
-        <button type="submit" onClick={handleClick}>
-          SEARCH
-        </button>
+        <button type="submit">SEARCH</button>
       </form>
     </section>
   );
