@@ -4,18 +4,18 @@
 import { clientId } from "./c-id";
 let access_token;
 
+const client_id = clientId;
+const response_type = "token";
+const redirect_uri = "http://localhost:3000";
+const state = "20";
+const scope = "playlist-modify-public";
+
 function getAccessToken() {
   // If we a have a access_token(this we make sure that the getAccessToken won't run again)
   if (access_token) {
     // Return access_token
     return access_token;
   }
-
-  const client_id = clientId;
-  const response_type = "token";
-  const redirect_uri = "http://localhost:3000";
-  const state = "20";
-  const scope = "playlist-modify-public";
 
   // Extract the values of access_token key and expires_in key
   // Access to the new url
@@ -79,6 +79,90 @@ export async function searchRequest(userSearchInput) {
   }
 }
 
+// This function needs to run when user hit the 'SAVE TO SPOTIFY' button
+// And save his playlist with their desire name and tracks
+export const saveToSpotify = (playlistName, playlistTracks) => {
+  // Make a request to the spotify to post playlist to user account
+
+  // For this, get the user's ID by making a GET request to this "https://api.spotify.com/v1/me" endpoint
+  // above request should return a promise that resolve to a user ID(returns a user ID)
+  // Get the access token from getAccessToken()
+  const access_token = getAccessToken();
+  // getUserId returns a promise that resolves to a user id if every thing goes ok.
+  const getUserId = async () => {
+    const response = await fetch("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+    // Turn json string response to json
+    const jsonResponse = await response.json();
+    if (jsonResponse) {
+      // Return user ID
+      return jsonResponse.id;
+    } else {
+      throw new Error(`Request failed: ${response.status}`);
+    }
+  };
+
+  // Create a POST request to "https://api.spotify.com/v1/users/{user_id}/playlists" endpoint
+  // in the body of the above POST request, set name and description of new the new playlist.
+  // This post request is for creating a new playlist with a new name and return a promise that resolve to a new playlist ID
+  const createPlaylist = async () => {
+    const userId = await getUserId();
+    const response = await fetch(
+      `https://api.spotify.com/v1/users/${userId}/playlists`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + access_token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: playlistName,
+          description: `The ${playlistName} is created by Jammming web app`,
+        }),
+      }
+    );
+    const jsonResponse = await response.json();
+    if (jsonResponse) {
+      // Return playlist ID
+      return jsonResponse.id;
+    } else {
+      throw new Error(`Request failed: ${response.status}`);
+    }
+  };
+
+  const postToSpotify = async () => {
+    const userId = await getUserId();
+    const playlistId = await createPlaylist();
+    // Add playlist tracks to new playlist by making a POST request to the
+    // "https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks" endpoint
+    // in body of the above POST request, set list of track IDs to add them to the new playlist
+    const response = await fetch(
+      `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + access_token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uris: playlistTracks.map((track) => track.uri),
+        }),
+      }
+    );
+    const jsonResponse = response.json();
+    // If jsonResponse is truthy
+    if (jsonResponse) {
+      // Then reset the playlistTracks
+      playlistTracks = [];
+    } else {
+      throw new Error(`Request failed: ${response.status}`);
+    }
+  };
+};
+
 /*
 The reason for order of creating a url and extracting access token:
 
@@ -94,3 +178,5 @@ the else block, which only runs if the access_token and expires_in are not defin
 This way, you are checking the hash first and extracting the access token if it 
 exists, before trying to redirect the user.
 */
+
+// {display_name: 'H-T', external_urls: {…}, href: 'https://api.spotify.com/v1/users/31u6fkbysfzoqlzpy6bonfaijln4', id: '31u6fkbysfzoqlzpy6bonfaijln4', images: Array(0), …}

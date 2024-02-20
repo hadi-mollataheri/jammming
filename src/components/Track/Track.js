@@ -1,9 +1,6 @@
 import React, { useCallback } from "react";
 
 function Track(props) {
-  console.log(props);
-  console.log(props.track);
-  console.log("Track component is being rendered");
   // onAdd is a function that needs to be called with a track
   const addTrackHandler = useCallback(
     (e) => {

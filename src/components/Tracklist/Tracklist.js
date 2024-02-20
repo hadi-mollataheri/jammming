@@ -2,7 +2,6 @@ import React from "react";
 import Track from "../Track/Track.js";
 
 function Tracklist(props) {
-  // console.log(props.tracks);
   return (
     <div className="tracklist">
       {props.tracks.map((track) => {
