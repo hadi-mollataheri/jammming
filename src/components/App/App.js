@@ -4,19 +4,18 @@ import "./App.css";
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
 import Playlist from "../Playlist/Playlist.js";
-import { searchRequest } from "../../utilities/spotify.js";
+import { searchRequest, saveToSpotify } from "../../utilities/spotify.js";
 
 function App() {
   // Create a state that can store and update the received data.
   const [fetchedTracksState, setFetchedTracksState] = useState([]);
-  
+
   // Create a state for initializing the playlist name
-  const [playlistName, setPlaylistName] = useState("New Playlist");
+  const [playlistNameState, setPlaylistNameState] = useState("New Playlist");
   // Create a state for initializing the playlist tracks
-  const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [playlistTracksState, setPlaylistTracksState] = useState([]);
   // Create a state for storing the user search input
   const [userSearchInputState, setUserSearchInputState] = useState("");
-
 
   // Use the useCallback hook to memoize the handleSearch function
   const handleSearch = useCallback((userSearchInput) => {
@@ -29,10 +28,10 @@ function App() {
       if (
         !playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)
       ) {
-        setPlaylistTracks((prevTracks) => [...prevTracks, track]);
+        setPlaylistTracksState((prevTracks) => [...prevTracks, track]);
       }
     },
-    [playlistTracks]
+    [playlistTracksState]
   );
   // Login for removing track from Playlist
   const removeTrack = useCallback(
@@ -40,19 +39,31 @@ function App() {
       if (
         playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)
       ) {
-        setPlaylistTracks((prevTracks) => {
+        setPlaylistTracksState((prevTracks) => {
           return prevTracks.filter(
             (remainingTrack) => remainingTrack.id !== track.id
           );
         });
       }
     },
-    [playlistTracks]
+    [playlistTracksState]
   );
   // Save user playlist name
   const updatePlaylistName = useCallback((name) => {
-    setPlaylistName(name);
+    setPlaylistNameState(name);
   }, []);
+
+  // Configure posting a new playlist to spotify
+  const handleSaveToSpotify = useCallback(
+    async (playlistName, playlistTracks) => {
+      try {
+        await saveToSpotify(playlistName, playlistTracks);
+      } catch (e) {
+        console.log("Error saving to Spotify:", e);
+      }
+    },
+    []
+  );
 
   return (
     <div className="App">
@@ -76,11 +87,12 @@ function App() {
           />
 
           <Playlist
-            playlistName={playlistName}
+            playlistName={playlistNameState}
             onNameChange={updatePlaylistName}
-            playlistTracks={playlistTracks}
+            playlistTracks={playlistTracksState}
             isRemovable={true}
             onRemove={removeTrack}
+            onSaveToSpotify={handleSaveToSpotify}
           />
         </section>
       </main>

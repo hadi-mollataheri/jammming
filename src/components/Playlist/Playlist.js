@@ -10,6 +10,13 @@ function Playlist(props) {
     [props.onNameChange]
   );
 
+  const handleClick = useCallback(
+    (event) => {
+      props.onSaveToSpotify(props.playlistName, props.playlistTracks);
+    },
+    [props.onSaveToSpotify, props.playlistName, props.playlistTracks]
+  );
+
   return (
     <div className="playlist">
       <label htmlFor="playListName" style={{ fontWeight: "bold" }}>
@@ -28,7 +35,7 @@ function Playlist(props) {
         isRemovable={props.isRemovable}
         onRemove={props.onRemove}
       />
-      <button>SAVE TO SPOTIFY</button>
+      <button onClick={handleClick}>SAVE TO SPOTIFY</button>
     </div>
   );
 }

@@ -161,6 +161,7 @@ export const saveToSpotify = (playlistName, playlistTracks) => {
       throw new Error(`Request failed: ${response.status}`);
     }
   };
+  return postToSpotify();
 };
 
 /*
