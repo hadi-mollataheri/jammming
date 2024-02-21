@@ -8,15 +8,24 @@ const client_id = clientId;
 const response_type = "token";
 const redirect_uri = "http://localhost:3000";
 const state = "20";
-const scope = "playlist-modify-public";
+const scope = "playlist-modify-public user-read-private user-read-email";
 
 function getAccessToken() {
   // If we a have a access_token(this we make sure that the getAccessToken won't run again)
+  // Explanation: if there’s a chance that the access_token could be set elsewhere in your code (outside of the getAccessToken() function), then this check could be useful to keep.
   if (access_token) {
     // Return access_token
     return access_token;
   }
 
+  // Check if access_token is stored in local storage(this is necessary
+  // because otherwise the next function wont access the access_token
+  // because the pushState method in this function will remove it)
+  const localStorageToken = localStorage.getItem("access_token");
+  if (localStorageToken) {
+    access_token = localStorageToken;
+    return access_token;
+  }
   // Extract the values of access_token key and expires_in key
   // Access to the new url
   let currentUrl = window.location.href;
@@ -27,12 +36,17 @@ function getAccessToken() {
     // Update access_token global variable
     access_token = accessTokenMatch[1];
     const expires_in = Number(expiresInMatch[1]);
-    // Save the expires_in in browser local storage to avoid refreshing the timer
+    // Save the expires_in and access_token in browser local storage to avoid refreshing the timer
     localStorage.setItem("expires_in", expires_in.toString());
+    localStorage.setItem("access_token", access_token);
     let savedExpires_in = Number(localStorage.getItem("expires_in"));
 
     window.setTimeout(() => (access_token = ""), savedExpires_in * 1000);
-    window.history.pushState("Access Token", null, "/"); // This clears the parameters, allowing us to grab a new access token when it expires.
+    // clear the URL parameters after extracting the access token.
+    //  This is done to prevent the access token from being visible in
+    // the URL after it’s been obtained. and This clears the
+    //  parameters, allowing us to grab a new access token when it expires.
+    window.history.pushState("Access Token", null, "/");
 
     return access_token;
   } else {
@@ -97,6 +111,7 @@ export const saveToSpotify = (playlistName, playlistTracks) => {
     });
     // Turn json string response to json
     const jsonResponse = await response.json();
+
     if (jsonResponse) {
       // Return user ID
       return jsonResponse.id;
@@ -125,6 +140,7 @@ export const saveToSpotify = (playlistName, playlistTracks) => {
       }
     );
     const jsonResponse = await response.json();
+
     if (jsonResponse) {
       // Return playlist ID
       return jsonResponse.id;
@@ -152,7 +168,7 @@ export const saveToSpotify = (playlistName, playlistTracks) => {
         }),
       }
     );
-    const jsonResponse = response.json();
+    const jsonResponse = await response.json();
     // If jsonResponse is truthy
     if (jsonResponse) {
       // Then reset the playlistTracks
@@ -179,5 +195,3 @@ the else block, which only runs if the access_token and expires_in are not defin
 This way, you are checking the hash first and extracting the access token if it 
 exists, before trying to redirect the user.
 */
-
-// {display_name: 'H-T', external_urls: {…}, href: 'https://api.spotify.com/v1/users/31u6fkbysfzoqlzpy6bonfaijln4', id: '31u6fkbysfzoqlzpy6bonfaijln4', images: Array(0), …}

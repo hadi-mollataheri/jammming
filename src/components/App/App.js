@@ -26,7 +26,9 @@ function App() {
   const addTrack = useCallback(
     (track) => {
       if (
-        !playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)
+        !playlistTracksState.some(
+          (selectedTrack) => selectedTrack.id === track.id
+        )
       ) {
         setPlaylistTracksState((prevTracks) => [...prevTracks, track]);
       }
@@ -37,7 +39,9 @@ function App() {
   const removeTrack = useCallback(
     (track) => {
       if (
-        playlistTracks.some((selectedTrack) => selectedTrack.id === track.id)
+        playlistTracksState.some(
+          (selectedTrack) => selectedTrack.id === track.id
+        )
       ) {
         setPlaylistTracksState((prevTracks) => {
           return prevTracks.filter(
@@ -58,6 +62,8 @@ function App() {
     async (playlistName, playlistTracks) => {
       try {
         await saveToSpotify(playlistName, playlistTracks);
+        // After the tracks are saved to Spotify, clear the playlistTracksState array
+        setPlaylistTracksState([]);
       } catch (e) {
         console.log("Error saving to Spotify:", e);
       }
