@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import styles from './Track.module.css';
 
 function Track(props) {
   // onAdd is a function that needs to be called with a track
@@ -22,23 +23,24 @@ function Track(props) {
   const renderActions = () => {
     if (props.isRemovable) {
       return (
-      <button onClick={removeTrackHandler}>
+      <button className={styles.button} onClick={removeTrackHandler}>
         -
       </button>
       );
     }
-    return <button onClick={addTrackHandler}>+</button>;
+    return <button className={styles.button} onClick={addTrackHandler}>+</button>;
   };
 
   return (
-    <div className="Track">
-      <div className="Track-info">
+    <div className={styles.track}>
+      <div className={styles.trackInfo}>
         <h3>{props.track.name}</h3>
         <p>
           {props.track.artist} | {props.track.album}
         </p>
       </div>
       {renderActions()}
+      <hr />
     </div>
   );
 }

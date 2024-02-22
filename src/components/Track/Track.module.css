@@ -1,0 +1,13 @@
+.trackInfo {
+  display: inline-block;
+  padding-right: .6em;
+}
+
+.track {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.button {
+    font-weight: bold;
+}

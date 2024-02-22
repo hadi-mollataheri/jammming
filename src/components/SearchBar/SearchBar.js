@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import styles from './SearchBar.module.css';
 
 function SearchBar({ userSearchInput, onUserSearchInputChange, onSearch }) {
   const handleChange = useCallback(
@@ -16,7 +17,7 @@ function SearchBar({ userSearchInput, onUserSearchInputChange, onSearch }) {
 
   return (
     <section role="search">
-      <label htmlFor="searchBar">ENTER THE SONG TITLE</label>
+      <label className={styles.title} htmlFor="searchBar">ENTER THE SONG TITLE</label>
       <br />
       <form onSubmit={handleSubmit}>
         <input
@@ -27,7 +28,7 @@ function SearchBar({ userSearchInput, onUserSearchInputChange, onSearch }) {
           value={userSearchInput}
         />
         <br />
-        <button type="submit">SEARCH</button>
+        <button className={styles.button} type="submit">SEARCH</button>
       </form>
     </section>
   );

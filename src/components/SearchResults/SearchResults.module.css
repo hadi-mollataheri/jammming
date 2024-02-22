@@ -1,0 +1,10 @@
+.searchResults {
+    background-color: rgba(39, 13, 63, 0.221);
+    border-radius: 1rem;
+    padding: .5rem 1rem;
+    width: 50%;
+}
+
+.header {
+    font-size:large;
+}

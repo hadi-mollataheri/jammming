@@ -1,0 +1,28 @@
+.title {
+  font-weight: bold;
+  color: rgb(145, 145, 239);
+}
+
+.button {
+    margin-top: 1rem;
+    font-weight: bold;
+    padding: 0.1em;
+    border: 1px solid #0a5e76;
+    border-radius: 5px;
+    text-decoration: none;
+    box-shadow: 0 3px #0e7591;
+    background-color: #61dafb;
+    
+  }
+  
+  .button:hover {
+    cursor: pointer;
+  }
+  
+  .button:active {
+    margin-top: 1.1rem;
+    box-shadow: 0 0;
+    transition-property: all;
+    transition: 0.1s;
+  }
+  

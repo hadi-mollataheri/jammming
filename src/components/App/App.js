@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import "./App.css";
+import styles from "./App.module.css";
 
 import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResults from "../SearchResults/SearchResults.js";
@@ -72,8 +72,8 @@ function App() {
   );
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={styles.App}>
+      <header className={styles.header}>
         <h1>
           Ja<span className="diff-color">mmm</span>ing
         </h1>
@@ -85,7 +85,7 @@ function App() {
           onSearch={handleSearch}
         />
 
-        <section className="main-content">
+        <section className={styles.mainContent}>
           <SearchResults
             fetchedTracks={fetchedTracksState}
             onAdd={addTrack}

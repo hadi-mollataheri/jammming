@@ -26,26 +26,35 @@ function getAccessToken() {
     access_token = localStorageToken;
     return access_token;
   }
+
   // Extract the values of access_token key and expires_in key
   // Access to the new url
   let currentUrl = window.location.href;
   // Extract access_token and expires_in parameters from the currentUrl using regular expression
   const accessTokenMatch = currentUrl.match(/access_token=([^&]*)/); // output: ['access_token=', '...']
-  const expiresInMatch = currentUrl.match(/expires_in=[^&]*/);
+  const expiresInMatch = currentUrl.match(/expires_in=([^&]*)/); // output: ['expires_in=', '...']
+  console.log(expiresInMatch);
+
   if (accessTokenMatch && expiresInMatch) {
     // Update access_token global variable
     access_token = accessTokenMatch[1];
+    // Use the captured group for expires_in, which is at index 1 of the match array
     const expires_in = Number(expiresInMatch[1]);
+    console.log(expires_in);
     // Save the expires_in and access_token in browser local storage to avoid refreshing the timer
     localStorage.setItem("expires_in", expires_in.toString());
     localStorage.setItem("access_token", access_token);
     let savedExpires_in = Number(localStorage.getItem("expires_in"));
 
-    window.setTimeout(() => (access_token = ""), savedExpires_in * 1000);
+    window.setTimeout(() => {
+      access_token = "";
+      localStorage.removeItem("access_token");
+    }, savedExpires_in * 1000);
+
     // clear the URL parameters after extracting the access token.
-    //  This is done to prevent the access token from being visible in
+    // This is done to prevent the access token from being visible in
     // the URL after it’s been obtained. and This clears the
-    //  parameters, allowing us to grab a new access token when it expires.
+    // parameters, allowing us to grab a new access token when it expires.
     window.history.pushState("Access Token", null, "/");
 
     return access_token;
@@ -61,7 +70,7 @@ function getAccessToken() {
 
 export async function searchRequest(userSearchInput) {
   try {
-    const access_token = getAccessToken();
+    const access_token = await getAccessToken();
     const response = await fetch(
       `https://api.spotify.com/v1/search?type=track&q=${userSearchInput}`,
       {
@@ -83,12 +92,18 @@ export async function searchRequest(userSearchInput) {
         album: track.album.name,
         uri: track.uri,
       }));
+    } else if (response.status === 401) {
+      const url = `https://accounts.spotify.com/authorize?response_type=${response_type}&client_id=${encodeURIComponent(
+        client_id
+      )}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(
+        redirect_uri
+      )}&state=${encodeURIComponent(state)}`;
+      window.location.assign(url);
     } else {
-      // Throw an error if the response is not ok
       throw new Error(`Request failed: ${response.status}`);
     }
   } catch (e) {
-    console.log(e);
+    console.log(`Because: ${e}`);
     return [];
   }
 }

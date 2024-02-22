@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 
 import Tracklist from "../Tracklist/Tracklist.js";
-
+import styles from './Playlist.module.css'
 function Playlist(props) {
   const handleNameChange = useCallback(
     (event) => {
@@ -18,7 +18,7 @@ function Playlist(props) {
   );
 
   return (
-    <div className="playlist">
+    <div className={styles.playlist}>
       <label htmlFor="playListName" style={{ fontWeight: "bold" }}>
         Playlist
       </label>
@@ -35,7 +35,7 @@ function Playlist(props) {
         isRemovable={props.isRemovable}
         onRemove={props.onRemove}
       />
-      <button onClick={handleClick}>SAVE TO SPOTIFY</button>
+      <button className={styles.saveButton} onClick={handleClick}>SAVE TO SPOTIFY</button>
     </div>
   );
 }
