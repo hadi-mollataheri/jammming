@@ -11,13 +11,6 @@ const state = "20";
 const scope = "playlist-modify-public user-read-private user-read-email";
 
 function getAccessToken() {
-  // If we a have a access_token(this we make sure that the getAccessToken won't run again)
-  // Explanation: if there’s a chance that the access_token could be set elsewhere in your code (outside of the getAccessToken() function), then this check could be useful to keep.
-  if (access_token) {
-    // Return access_token
-    return access_token;
-  }
-
   // Check if access_token is stored in local storage(this is necessary
   // because otherwise the next function wont access the access_token
   // because the pushState method in this function will remove it)
@@ -33,14 +26,12 @@ function getAccessToken() {
   // Extract access_token and expires_in parameters from the currentUrl using regular expression
   const accessTokenMatch = currentUrl.match(/access_token=([^&]*)/); // output: ['access_token=', '...']
   const expiresInMatch = currentUrl.match(/expires_in=([^&]*)/); // output: ['expires_in=', '...']
-  console.log(expiresInMatch);
 
   if (accessTokenMatch && expiresInMatch) {
     // Update access_token global variable
     access_token = accessTokenMatch[1];
     // Use the captured group for expires_in, which is at index 1 of the match array
     const expires_in = Number(expiresInMatch[1]);
-    console.log(expires_in);
     // Save the expires_in and access_token in browser local storage to avoid refreshing the timer
     localStorage.setItem("expires_in", expires_in.toString());
     localStorage.setItem("access_token", access_token);
